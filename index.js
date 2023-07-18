@@ -1,15 +1,14 @@
 const line = require("@line/bot-sdk");
 const express = require("express");
 const axios = require("axios").default;
-const dotenv = require("dotenv");
+require('dotenv').config();
 const moment = require("moment");
-
-const env = dotenv.config().parsed;
 const app = express();
-
+const channelAccessToken = process.env.ACCESS_TOKEN;
+const channelSecret = process.env.SECRET_TOKEN;
 const lineConfig = {
-  channelAccessToken: env.ACCESS_TOKEN,
-  channelSecret: env.SECRET_TOKEN,
+  channelAccessToken: channelAccessToken,
+  channelSecret: channelSecret,
 };
 
 const client = new line.Client(lineConfig);
