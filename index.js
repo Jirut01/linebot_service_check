@@ -31,6 +31,18 @@ app.post("/webhook", line.middleware(lineConfig), async (req, res) => {
       } catch (error) {
         console.log("Error:", error.message);
       }
+    } else if (
+      events[0].message.type == "text" &&
+      events[0].message.text == "check service dev"
+    ) {
+      try {
+        const response = await axios.get(
+          "https://dev-health-gateway.inet.co.th/api/health"
+        );
+        events[0].data = response.data;
+      } catch (error) {
+        console.log("Error:", error.message);
+      }
     }
     return events.length > 0
       ? await Promise.all(events.map((item) => handleEvent(item)))
@@ -49,16 +61,39 @@ const handleEvent = async (event) => {
   ) {
     const localDateTime = moment.utc(event.data.data.time).local();
     const formattedDateTime = localDateTime.format("DD/MM/YYYY HH:mm น.");
-
-    client.replyMessage(event.replyToken, {
-      type: "text",
-      text: `caching : ${event.data.data.caching} || maria_db : ${event.data.data.maria_db} || mongo_db : ${event.data.data.mongo_db} || time : ${formattedDateTime}`,
-    });
+    const message = [
+      {
+        type: "text",
+        text: "status zone uat",
+      },
+      {
+        type: "text",
+        text: `caching : ${event.data.data.caching} || maria_db : ${event.data.data.maria_db} || mongo_db : ${event.data.data.mongo_db} || time : ${formattedDateTime}`,
+      },
+    ];
+    client.replyMessage(event.replyToken, message);
+  } else if (
+    event.type === "message" &&
+    event.message.text === "check service uat"
+  ) {
+    const localDateTime = moment.utc(event.data.data.time).local();
+    const formattedDateTime = localDateTime.format("DD/MM/YYYY HH:mm น.");
+    const message = [
+      {
+        type: "text",
+        text: "status zone dev",
+      },
+      {
+        type: "text",
+        text: `caching : ${event.data.data.caching} || maria_db : ${event.data.data.maria_db} || mongo_db : ${event.data.data.mongo_db} || time : ${formattedDateTime}`,
+      },
+    ];
+    client.replyMessage(event.replyToken, message);
   } else {
-    return client.replyMessage(event.replyToken, {
-      type: "text",
-      text: "คุณพิมพ์อะไรฉันไม่เข้าใจ",
-    });
+    // return client.replyMessage(event.replyToken, {
+    //   type: "text",
+    //   text: "คุณพิมพ์อะไรฉันไม่เข้าใจ",
+    // });
   }
 };
 
