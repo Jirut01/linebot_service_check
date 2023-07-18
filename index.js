@@ -74,7 +74,7 @@ const handleEvent = async (event) => {
     client.replyMessage(event.replyToken, message);
   } else if (
     event.type === "message" &&
-    event.message.text === "check service uat"
+    event.message.text === "check service dev"
   ) {
     const localDateTime = moment.utc(event.data.data.time).local();
     const formattedDateTime = localDateTime.format("DD/MM/YYYY HH:mm น.");
