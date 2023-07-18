@@ -1,7 +1,7 @@
 const line = require("@line/bot-sdk");
 const express = require("express");
 const axios = require("axios").default;
-require('dotenv').config();
+require("dotenv").config();
 const moment = require("moment");
 const app = express();
 const channelAccessToken = process.env.ACCESS_TOKEN;
@@ -12,7 +12,10 @@ const lineConfig = {
 };
 
 const client = new line.Client(lineConfig);
-var data = [];
+app.get("/", (req, res) => {
+  return res.json({ status: "success" });
+});
+
 app.post("/webhook", line.middleware(lineConfig), async (req, res) => {
   try {
     const events = req.body.events;
