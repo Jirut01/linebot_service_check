@@ -90,10 +90,10 @@ const handleEvent = async (event) => {
     ];
     client.replyMessage(event.replyToken, message);
   } else {
-    // return client.replyMessage(event.replyToken, {
-    //   type: "text",
-    //   text: "คุณพิมพ์อะไรฉันไม่เข้าใจ",
-    // });
+    return client.replyMessage(event.replyToken, {
+      type: "text",
+      text: "กรุณาพิมพ์อีกครั้ง",
+    });
   }
 };
 
